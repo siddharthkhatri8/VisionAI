@@ -47,3 +47,13 @@ export const login = async (
     });
   }
 };
+
+export const me = async (
+  req: Request,
+  res: Response
+) => {
+  res.json({
+    success: true,
+    user: req.user,
+  });
+};
