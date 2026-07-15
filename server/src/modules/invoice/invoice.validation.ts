@@ -15,3 +15,7 @@ export const createInvoiceSchema = z.object({
 
   discount: z.number().optional(),
 });
+
+export const updatePaymentSchema = z.object({
+  paidAmount: z.number().min(0),
+});

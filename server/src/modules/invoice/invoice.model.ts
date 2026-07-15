@@ -53,6 +53,16 @@ const invoiceSchema = new Schema<IInvoice>(
       default: PaymentStatus.PENDING,
     },
 
+    paidAmount: {
+      type: Number,
+      default: 0,
+    },
+
+    dueAmount: {
+      type: Number,
+      default: 0,
+    },
+
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -63,6 +73,8 @@ const invoiceSchema = new Schema<IInvoice>(
     timestamps: true,
   }
 );
+
+
 
 export const Invoice = mongoose.model<IInvoice>(
   "Invoice",

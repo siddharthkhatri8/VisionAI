@@ -35,3 +35,25 @@ export interface IInvoice {
 
   createdBy: Types.ObjectId;
 }
+
+
+
+export interface IInvoice {
+  customer: Types.ObjectId;
+  prescription?: Types.ObjectId;
+
+  items: IInvoiceItem[];
+
+  subtotal: number;
+  discount: number;
+  gst: number;
+  grandTotal: number;
+
+  paymentStatus: PaymentStatus;
+
+  paidAmount: number;
+
+  dueAmount: number;
+
+  createdBy: Types.ObjectId;
+}

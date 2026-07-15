@@ -1,5 +1,6 @@
 import { Invoice } from "./invoice.model.js";
 import { Product } from "../product/product.model.js";
+import { PaymentStatus } from "./invoice.interface.js";
 
 export const createInvoice = async (
   payload: any,
@@ -31,7 +32,7 @@ export const createInvoice = async (
       total,
     });
 
-    // Reduce stock
+    // Reduce the stock
     product.stock -= item.quantity;
     await product.save();
   }
@@ -40,9 +41,11 @@ export const createInvoice = async (
 
   const taxableAmount = subtotal - discount;
 
-  const gst = taxableAmount * 0.18;
+  const gst = Number((taxableAmount * 0.18).toFixed(2));
 
-  const grandTotal = taxableAmount + gst;
+const grandTotal = Number(
+  (taxableAmount + gst).toFixed(2)
+);
 
   return await Invoice.create({
     customer: payload.customer,
@@ -52,6 +55,9 @@ export const createInvoice = async (
     discount,
     gst,
     grandTotal,
+    paymentStatus: PaymentStatus.PENDING,
+    paidAmount: 0,
+    dueAmount: grandTotal,
     createdBy: userId,
   });
 };
@@ -64,4 +70,52 @@ export const getInvoices = async () => {
     .sort({
       createdAt: -1,
     });
+};
+
+export const getInvoiceById = async (id: string) => {
+  return await Invoice.findById(id)
+    .populate("customer")
+    .populate("prescription")
+    .populate("items.product")
+    .populate("createdBy", "fullName email");
+};
+
+export const getCustomerInvoices = async (
+  customerId: string
+) => {
+  return await Invoice.find({
+    customer: customerId,
+  })
+    .populate("items.product")
+    .populate("prescription")
+    .sort({
+      createdAt: -1,
+    });
+};
+
+export const updatePayment = async (
+  invoiceId: string,
+  paidAmount: number
+) => {
+  const invoice = await Invoice.findById(invoiceId);
+
+  if (!invoice) {
+    throw new Error("Invoice not found");
+  }
+
+  invoice.paidAmount += paidAmount;
+
+  invoice.dueAmount =
+    invoice.grandTotal - invoice.paidAmount;
+
+  if (invoice.dueAmount <= 0) {
+    invoice.paymentStatus = PaymentStatus.PAID;
+    invoice.dueAmount = 0;
+  } else if (invoice.paidAmount > 0) {
+    invoice.paymentStatus = PaymentStatus.PARTIAL;
+  }
+
+  await invoice.save();
+
+  return invoice;
 };
