@@ -45,6 +45,11 @@ const customerSchema = new Schema<ICustomer>(
       ref: "User",
       required: true,
     },
+
+    photo: {
+        type: String,
+    },
+    
   },
   {
     timestamps: true,

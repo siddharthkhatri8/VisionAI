@@ -27,6 +27,7 @@ export interface IPrescription {
   visitDate: Date;
 
   createdBy: Types.ObjectId;
+  scanImage?: string;
 
   isActive: boolean;
 }

@@ -16,8 +16,7 @@ export interface ICustomer {
   occupation?: string;
   referredBy?: string;
   notes?: string;
-
   isActive: boolean;
-
   createdBy: Types.ObjectId;
+  photo?: string;
 }

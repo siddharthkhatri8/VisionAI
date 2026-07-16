@@ -8,6 +8,7 @@ import invoiceRoutes from "../modules/invoice/invoice.routes.js";
 import reportRoutes from "../modules/report/report.routes.js";
 import dashboardRoutes from "../modules/dashboard/dashboard.routes.js";
 import aiRoutes from "../modules/ai/ai.routes.js";
+import uploadRoutes from "../modules/upload/upload.routes.js";
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use("/invoices", invoiceRoutes);
 router.use("/reports", reportRoutes);
 router.use("/dashboard", dashboardRoutes);
 router.use("/ai", aiRoutes);
+router.use("/upload", uploadRoutes);
 
 export default router;

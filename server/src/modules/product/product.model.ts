@@ -50,7 +50,9 @@ const productSchema = new Schema<IProduct>(
 
     description: String,
 
-    image: String,
+    image: {
+        type: String,
+    },
 
     createdBy: {
       type: Schema.Types.ObjectId,

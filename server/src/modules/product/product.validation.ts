@@ -16,12 +16,9 @@ export const createProductSchema = z.object({
   ]),
 
   buyingPrice: z.number(),
-
   sellingPrice: z.number(),
-
   stock: z.number(),
-
   minimumStock: z.number().optional(),
-
   description: z.string().optional(),
+  image: z.string().optional(),
 });
